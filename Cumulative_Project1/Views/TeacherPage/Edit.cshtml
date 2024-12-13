@@ -1,0 +1,94 @@
+﻿@model Cumulative_Project1.Models.Teacher
+
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Teacher</h2>
+
+    <nav class="mb-3">
+        <a class="btn btn-primary" href="/TeacherPage/List">Back</a>
+    </nav>
+
+    <form id="editTeacherForm" method="POST" action="/TeacherPage/Update/@Model.TeacherId">
+        <div class="form-group mb-3">
+            <label for="TeacherFirstName" class="form-label">First Name:</label>
+            <input type="text" id="TeacherFirstName" name="TeacherFirstName" class="form-control" value="@Model.TeacherFirstName" required />
+            <span id="teacherFirstNameError" class="text-danger" style="display:none;">First name is required.</span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="TeacherLastName" class="form-label">Last Name:</label>
+            <input type="text" id="TeacherLastName" name="TeacherLastName" class="form-control" value="@Model.TeacherLastName" required />
+            <span id="teacherLastNameError" class="text-danger" style="display:none;">Last name is required.</span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="EmployeeNumber" class="form-label">Employee Number:</label>
+            <input type="text" id="EmployeeNumber" name="EmployeeNumber" class="form-control" value="@Model.EmployeeNumber" required />
+            <span id="employeeNumberError" class="text-danger" style="display:none;">Employee number must start with 'T' followed by 4 digits (e.g., T1234).</span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="HireDate" class="form-label">Hire Date:</label>
+            <input type="date" id="HireDate" name="HireDate" class="form-control" value="@Model.HireDate.ToString("yyyy-MM-dd")" required />
+            <span id="hireDateError" class="text-danger" style="display:none;">Hire date is required.</span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Salary" class="form-label">Salary:</label>
+            <input type="number" id="Salary" name="Salary" class="form-control" value="@Model.Salary" required min="0" />
+            <span id="salaryError" class="text-danger" style="display:none;">Salary is required and must be a positive number.</span>
+        </div>
+
+        <div class="form-group mb-3">
+            <input type="submit" value="Update Teacher" class="btn btn-success" />
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript to handle client-side validation -->
+<script>
+    document.getElementById('editTeacherForm').addEventListener('submit', function(event) {
+        let valid = true;
+
+        // Clear any previous error messages
+        document.querySelectorAll('.text-danger').forEach(function(error) {
+            error.style.display = 'none';
+        });
+
+        // Validate First Name
+        if (document.getElementById('TeacherFirstName').value.trim() === '') {
+            document.getElementById('teacherFirstNameError').style.display = 'inline';
+            valid = false;
+        }
+
+        // Validate Last Name
+        if (document.getElementById('TeacherLastName').value.trim() === '') {
+            document.getElementById('teacherLastNameError').style.display = 'inline';
+            valid = false;
+        }
+
+        // Validate Employee Number (should start with 'T' followed by 4 digits)
+        var employeeNumber = document.getElementById('EmployeeNumber').value.trim();
+        var employeeNumberRegex = /^T\d{4}$/;  // Check for 'T' followed by 4 digits
+        if (!employeeNumber || !employeeNumberRegex.test(employeeNumber)) {
+            document.getElementById('employeeNumberError').style.display = 'inline';
+            valid = false;
+        }
+
+        // Validate Hire Date
+        if (document.getElementById('HireDate').value.trim() === '') {
+            document.getElementById('hireDateError').style.display = 'inline';
+            valid = false;
+        }
+
+        // Validate Salary
+        var salary = document.getElementById('Salary').value.trim();
+        if (!salary || salary <= 0) {
+            document.getElementById('salaryError').style.display = 'inline';
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Prevent form submission if invalid
+        }
+    });
+</script>

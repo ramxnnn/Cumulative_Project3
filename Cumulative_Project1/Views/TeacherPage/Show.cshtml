@@ -1,0 +1,17 @@
+﻿@model Cumulative_Project1.Models.Teacher
+
+<div class="container mt-5">
+    <h1 class="mb-4">@Model.TeacherFirstName @Model.TeacherLastName</h1>
+
+    <nav class="mb-3">
+        <a class="btn btn-primary" href="/TeacherPage/List">Back to List</a>
+        <a class="btn btn-warning" href="/TeacherPage/DeleteConfirm/@Model.TeacherId">Delete</a>
+        <a class="btn btn-secondary" href="/TeacherPage/Edit/@Model.TeacherId">Edit</a>
+    </nav>
+
+    <div class="mb-3">
+        <p><strong>Employee Number:</strong> <span class="text-muted">@Model.EmployeeNumber</span></p>
+        <p><strong>Hire Date:</strong> <span class="text-muted">@Model.HireDate.ToString("yyyy-MM-dd")</span></p>
+        <p><strong>Salary:</strong> <span class="text-muted">@Model.Salary.ToString("C")</span></p>
+    </div>
+</div>

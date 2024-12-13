@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Cumulative_Project1.Models.Teacher>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Teacher Management</h2>
+
+    <!-- Add Teacher Button -->
+    <a href="/TeacherPage/New" class="btn btn-primary mb-4">Add Teacher</a>
+
+    <!-- Search Form -->
+    <form method="GET" action="/TeacherPage/List" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="SearchKey" class="form-control" placeholder="Search by name..." />
+            <div class="input-group-append">
+                <input type="submit" value="Search" class="btn btn-outline-secondary" />
+            </div>
+        </div>
+    </form>
+
+    <!-- Teacher List -->
+    <div class="list-group" id="teacherList">
+        @foreach (Cumulative_Project1.Models.Teacher teacher in Model)
+        {
+            <div class="list-group-item d-flex justify-content-between align-items-center" id="teacher-@teacher.TeacherId">
+                <!-- Teacher Name -->
+                <a href="/TeacherPage/Show/@teacher.TeacherId" class="list-group-item-action">
+                    @teacher.TeacherFirstName @teacher.TeacherLastName
+                </a>
+                <!-- Show Button -->
+                <a href="/TeacherPage/Show/@teacher.TeacherId" class="btn btn-info btn-sm mr-2">
+                    <!-- Added margin-right -->
+                    Show
+                </a>
+                <!-- Delete Button (AJAX) -->
+                <button class="btn btn-danger btn-sm" onclick="deleteTeacher(@teacher.TeacherId)">
+                    Delete
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- JavaScript to handle AJAX -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // AJAX call for deleting a teacher
+    function deleteTeacher(teacherId) {
+        if (confirm('Are you sure you want to delete this teacher?')) {
+            $.ajax({
+                url: '/api/Teacher/DeleteTeacher/' + teacherId,  // API endpoint for deleting a teacher
+                type: 'DELETE',
+                success: function (result) {
+                    // On success, remove the teacher from the list (or refresh the list)
+                    $('#teacher-' + teacherId).remove();
+                    alert('Teacher deleted successfully!');
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    alert('Error deleting teacher. Please try again later.');
+                }
+            });
+        }
+    }
+</script>
